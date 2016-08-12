@@ -150,3 +150,5 @@ typedef NS_ENUM(NSUInteger, LLSegmentedControlTitleSpacingStyle) {
 Demo样式如下：
 
 ![LLSegmentedControl.gif](LLSegmentedControl.gif)
+
+如果你对这个Demo感兴趣，请给个star奥 !!! 谢谢大家 😊!!!
