@@ -14,9 +14,9 @@ typedef void (^LLSegmentedControlBlock) (LLSegmentedControl *segmentedControl, N
 
 // 下划线样式
 typedef NS_ENUM(NSUInteger, LLSegmentedControlLineStyle) {
-    LLSegmentedControlStyleUnderline = 0, // 底部划线
-    LLSegmentedControlStyleTopline = 1, // 顶部划线
-    LLSegmentedControlLineStyleHidden = 2, // 隐藏
+    LLSegmentedControlStyleUnderline = 0, //  下划线在底部
+    LLSegmentedControlStyleTopline = 1, // 下划线在顶部
+    LLSegmentedControlLineStyleHidden = 2, // 下划线隐藏
 };
 
 // 文字排列样式
