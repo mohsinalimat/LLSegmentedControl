@@ -28,7 +28,8 @@ static NSString *const reUse = @"reUse";
     self.dataArray = @[@"Demo 0",
                        @"Demo 1",
                        @"Demo 2",
-                       @"Demo 3"];
+                       @"Demo 3",
+                       @"Demo 4"];
 }
 
 #pragma mark -
@@ -47,6 +48,7 @@ static NSString *const reUse = @"reUse";
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     DemoViewController *demoVC = [[DemoViewController alloc] init];
     demoVC.index = indexPath.row;
+    demoVC.title = self.dataArray[indexPath.row];
     [self.navigationController pushViewController:demoVC animated:YES];
 }
 

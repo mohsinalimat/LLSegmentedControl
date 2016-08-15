@@ -17,7 +17,7 @@ static NSInteger const kButtonTag = 100000;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *lineView;
 @property (nonatomic, assign, readwrite) NSInteger selectedIndex;
-@property (nonatomic, copy) LLSegmentedControlBlock block;
+@property (nonatomic, copy) LLSegmentedControlBlock selectedBlock;
 
 @end
 
@@ -144,37 +144,12 @@ static NSInteger const kButtonTag = 100000;
 }
 
 - (void)handleButtonClickAction:(UIButton *)sender {
-    // reset selectedIndex
-    self.selectedIndex = sender.tag - kButtonTag;
+    [self segmentedControlSetSelectedIndex:sender.tag - kButtonTag];
     
     // selected callback
-    if (self.block) {
-        self.block(self, self.selectedIndex);
+    if (self.selectedBlock) {
+        self.selectedBlock(self, self.selectedIndex);
     }
-    
-    // underline reset frame animation
-    if (self.segmentedControlLineStyle != LLSegmentedControlLineStyleHidden) {
-        [UIView animateWithDuration:kUnderlineDuration animations:^{
-            self.lineView.width = [self getUnderlineWidth];
-            self.lineView.centerX = sender.centerX;
-        }];
-    }
-    
-    // reset title color
-    for (UIView *subview in self.scrollView.subviews) {
-        if ([subview isKindOfClass:[UIButton class]]) {
-            UIButton *button = (UIButton *)subview;
-            [button setTitleColor:(button == sender ? self.selectedTextColor : self.textColor) forState:UIControlStateNormal];
-            button.titleLabel.font = (button == sender ? self.selectedFont : self.font);
-        }
-    }
-    
-    // reset scrollView contentOffset.x
-    CGFloat selectedSegmentOffset = self.width / 2 - sender.width / 2;
-    CGRect rectToScrollTo = sender.frame;
-    rectToScrollTo.origin.x -= selectedSegmentOffset;
-    rectToScrollTo.size.width += selectedSegmentOffset * 2;
-    [self.scrollView scrollRectToVisible:rectToScrollTo animated:YES];
 }
 
 - (CGFloat)getUnderlineWidth {
@@ -197,7 +172,56 @@ static NSInteger const kButtonTag = 100000;
 }
 
 - (void)segmentedControlSelectedWithBlock:(LLSegmentedControlBlock)block {
-    self.block = block;
+    self.selectedBlock = block;
+}
+
+- (void)segmentedControlSetSelectedIndex:(NSInteger)selectedIndex {
+    // prevent array bounds
+    if (selectedIndex > self.titleArray.count - 1) {
+        selectedIndex = self.titleArray.count - 1;
+    }
+    if (selectedIndex < 0) {
+        selectedIndex = 0;
+    }
+    
+    // reset selectedIndex
+    self.selectedIndex = selectedIndex;
+    
+    // get selected button
+    UIButton *selectedButton = [self.scrollView viewWithTag:kButtonTag + selectedIndex];
+    
+    // underline reset frame animation
+    if (self.segmentedControlLineStyle != LLSegmentedControlLineStyleHidden) {
+        [UIView animateWithDuration:kUnderlineDuration animations:^{
+            self.lineView.width = [self getUnderlineWidth];
+            self.lineView.centerX = selectedButton.centerX;
+        }];
+    }
+    
+    // reset title color
+    for (UIView *subview in self.scrollView.subviews) {
+        if ([subview isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton *)subview;
+            [button setTitleColor:(button == selectedButton ? self.selectedTextColor : self.textColor) forState:UIControlStateNormal];
+            button.titleLabel.font = (button == selectedButton ? self.selectedFont : self.font);
+        }
+    }
+    
+    // reset scrollView contentOffset.x
+    CGFloat selectedSegmentOffset = self.width / 2 - selectedButton.width / 2;
+    CGRect rectToScrollTo = selectedButton.frame;
+    rectToScrollTo.origin.x -= selectedSegmentOffset;
+    rectToScrollTo.size.width += selectedSegmentOffset * 2;
+    [self.scrollView scrollRectToVisible:rectToScrollTo animated:YES];
+}
+
+- (void)segmentedControlSetSelectedIndexWithSelectedBlock:(NSInteger)selectedIndex {
+    [self segmentedControlSetSelectedIndex:selectedIndex];
+    
+    // selected callback
+    if (self.selectedBlock) {
+        self.selectedBlock(self, self.selectedIndex);
+    }
 }
 
 #pragma mark -
@@ -220,6 +244,12 @@ static NSInteger const kButtonTag = 100000;
         _lineView.backgroundColor = self.lineColor;
     }
     return _lineView;
+}
+
+#pragma mark -
+#pragma mark - deinit
+- (void)dealloc {
+    _selectedBlock = nil;
 }
 
 /*

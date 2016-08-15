@@ -114,10 +114,21 @@ typedef NS_ENUM(NSUInteger, LLSegmentedControlTitleSpacingStyle) {
  */
 @property (nonatomic, assign, readonly) NSInteger selectedIndex;
 
-/**
- * 点击回调
+/** 点击回调
+ * @param block: 回调
  */
 - (void)segmentedControlSelectedWithBlock:(LLSegmentedControlBlock)block;
+
+/** 手动设置选中位置
+ * @param selectedIndex: 选中位置
+ */
+- (void)segmentedControlSetSelectedIndex:(NSInteger)selectedIndex;
+
+/** 手动设置选中位置且执行 segmentedControlSelectedWithBlock: 的回调方法
+ * @param selectedIndex: 选中位置
+ * @param block: 回调
+ */
+- (void)segmentedControlSetSelectedIndexWithSelectedBlock:(NSInteger)selectedIndex;
 
 @end
 
