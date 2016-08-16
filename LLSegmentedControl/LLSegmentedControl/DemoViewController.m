@@ -152,6 +152,8 @@
     // 则不需要设置 titleWidth 属性
     _segmentedControl.titleSpacing = 30;
     _segmentedControl.defaultSelectedIndex = 0;
+    _segmentedControl.showSplitLine = YES;
+    _segmentedControl.splitLineSize = CGSizeMake(1, 25);
     [self.view addSubview:_segmentedControl];
     
     CGFloat const kScrollViewHeight = kScreenHeight - (kSegmentedControlTop + kSegmentedControlHeight);

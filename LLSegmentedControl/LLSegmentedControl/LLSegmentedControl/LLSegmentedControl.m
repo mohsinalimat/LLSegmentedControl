@@ -64,6 +64,9 @@ static NSInteger const kButtonTag = 100000;
     self.titleSpacing = 40.f;
     self.defaultSelectedIndex = 0;
     self.selectedIndex = self.defaultSelectedIndex;
+    self.showSplitLine = NO;
+    self.splitLineSize = CGSizeMake(0, 0);
+    self.splitLineColor = [UIColor grayColor];
 }
 
 - (void)buildingUI {
@@ -107,6 +110,18 @@ static NSInteger const kButtonTag = 100000;
         
         button.left = lastView ? lastView.right : 0;
         button.height = weakSelf.height;
+        
+        // building split line
+        if (weakSelf.showSplitLine) {
+            if (idx == 0) { } else {
+                UIView *splitLine = [[UIView alloc] init];
+                splitLine.backgroundColor = weakSelf.splitLineColor;
+                splitLine.size = weakSelf.splitLineSize;
+                splitLine.centerX = button.left;
+                splitLine.centerY = button.centerY;
+                [weakSelf.scrollView addSubview:splitLine];
+            }
+        }
         
         lastView = button;
     }];

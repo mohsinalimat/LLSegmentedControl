@@ -114,6 +114,21 @@ typedef NS_ENUM(NSUInteger, LLSegmentedControlTitleSpacingStyle) {
  */
 @property (nonatomic, assign, readonly) NSInteger selectedIndex;
 
+/**
+ * @property showSplitLine: 显示分割线, default is NO, if YES show splitLine
+ */
+@property (nonatomic, assign) BOOL showSplitLine;
+
+/**
+ * @property splitLineHeight: 分割线大小
+ */
+@property (nonatomic, assign) CGSize splitLineSize;
+
+/**
+ * @property splitLineColor: 分割线颜色
+ */
+@property (nonatomic, strong) UIColor *splitLineColor;
+
 /** 点击回调
  * @param block: 回调
  */
