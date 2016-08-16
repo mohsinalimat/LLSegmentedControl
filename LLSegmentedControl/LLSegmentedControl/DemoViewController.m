@@ -152,6 +152,7 @@
     // 则不需要设置 titleWidth 属性
     _segmentedControl.titleSpacing = 30;
     _segmentedControl.defaultSelectedIndex = 0;
+    // 分割线设置
     _segmentedControl.showSplitLine = YES;
     _segmentedControl.splitLineSize = CGSizeMake(1, 25);
     [self.view addSubview:_segmentedControl];
